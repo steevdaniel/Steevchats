@@ -1,0 +1,15 @@
+{
+  "name": "SteevChats",
+  "short_name": "SteevChats",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00b050",
+  "icons": [
+    {
+      "src": "steevchats_logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

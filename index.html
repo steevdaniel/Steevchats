@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SteevChats — Prototype</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root{--bg:#000;--accent:#00b050;--muted:#222;--text:#eaeaea}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+    header{display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(90deg,var(--accent),#007f3f)}
+    .logo{width:40px;height:40px;border-radius:8px;background:#000 center/cover no-repeat}
+    .container{padding:16px}
+    .card{background:var(--muted);padding:12px;border-radius:10px;margin-bottom:12px}
+    input,button,textarea{width:100%;padding:10px;border-radius:8px;border:0;margin-top:8px}
+    .row{display:flex;gap:8px}
+    .users{display:flex;gap:8px;overflow:auto;padding:8px 0}
+    .user{min-width:72px;text-align:center}
+    .chat-list{margin-top:12px}
+    .msg{background:#0b4720;padding:8px;border-radius:10px;margin:6px 0;max-width:80%}
+    .msg.me{background:#0fa86b;margin-left:auto}
+    footer{padding:12px;text-align:center;color:#888}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo" style="background-image:url('steevchats_logo.svg')"></div>
+    <h1 style="font-size:18px;margin:0">SteevChats</h1>
+  </header>
+  <div class="container">
+    <div class="card">
+      <strong>Welcome to SteevChats</strong>
+      <p>Prototype — login and connect worldwide.</p>
+      <input id="name" placeholder="Display name">
+      <input id="email" placeholder="Email">
+      <button id="login">Create Account / Login</button>
+    </div>
+
+    <div id="app" style="display:none">
+      <div class="card">
+        <strong>Explore People (Worldwide)</strong>
+        <div class="users" id="people"></div>
+      </div>
+
+      <div class="card chat-list">
+        <strong>Messages</strong>
+        <div id="messages" style="min-height:160px"></div>
+        <div class="row">
+          <input id="text" placeholder="Type a message">
+          <button id="send">Send</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <strong>Your Profile</strong>
+        <div id="profile"></div>
+        <textarea id="bio" placeholder="Write a short bio"></textarea>
+      </div>
+    </div>
+    <footer>SteevChats • Green & Black • Prototype</footer>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('login');
+    const app = document.getElementById('app');
+    const people = document.getElementById('people');
+    const messages = document.getElementById('messages');
+    const profile = document.getElementById('profile');
+
+    function mockPeople(){
+      const sample = [
+        {name:'Amina', loc:'Ghana'},
+        {name:'Luca', loc:'Italy'},
+        {name:'Chen', loc:'China'},
+        {name:'Maya', loc:'India'},
+        {name:'Omar', loc:'Egypt'},
+      ];
+      sample.forEach(p=>{
+        const d = document.createElement('div'); d.className='user';
+        d.innerHTML = `<div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(90deg,#00b050,#007f3f)"></div><div style="font-size:13px">${p.name}</div><div style="font-size:11px;color:#9db89a">${p.loc}</div>`;
+        people.appendChild(d);
+      });
+    }
+    mockPeople();
+
+    loginBtn.onclick = ()=>{
+      const name = document.getElementById('name').value || 'You';
+      const email = document.getElementById('email').value || 'you@example.com';
+      app.style.display='block';
+      profile.innerHTML = `<div><strong>${name}</strong><div style="color:#9db89a">${email}</div></div>`;
+      loginBtn.textContent='Logged in';
+    };
+
+    document.getElementById('send').onclick = ()=>{
+      const t = document.getElementById('text');
+      if(!t.value) return;
+      const el = document.createElement('div');
+      el.className='msg me';
+      el.textContent = t.value;
+      messages.appendChild(el);
+      t.value='';
+      messages.scrollTop = messages.scrollHeight;
+    };
+
+    // install prompt (PWA)
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+  </script>
+</body>
+</html>
